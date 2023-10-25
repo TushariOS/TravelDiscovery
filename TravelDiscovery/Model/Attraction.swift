@@ -6,3 +6,12 @@
 //
 
 import Foundation
+ 
+/// Attraction
+struct Attraction: Identifiable {
+    let id = UUID().uuidString
+    let name: String
+    let lattitude: Double
+    let longitude: Double
+    let image: String
+}

@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct Category: Hashable {
+    let name: String
+    let imageName: String
+}

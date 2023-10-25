@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct Place: Decodable, Hashable {
+    let name: String
+    let thumbnail: String
+    let id: Int
+}

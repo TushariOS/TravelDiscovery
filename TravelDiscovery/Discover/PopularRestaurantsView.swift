@@ -1,15 +1,12 @@
 //
 //  SwiftUIView.swift
-//  TravelDiscovery
+//  PopularRestaurantsView
 //
 //  Created by Tushar Jaunjalkar on 05/06/23.
 //
 
 import SwiftUI
 
-struct Restaurants: Hashable {
-    let name, imageName: String
-}
 //MARK: - PopularRestaurantsView
 struct PopularRestaurantsView: View {
     let restaurants: [Restaurants] = [.init(name: "Japan's Finest Tapas", imageName: "4"),
@@ -24,45 +21,19 @@ struct PopularRestaurantsView: View {
                     .font(.system(size: 12, weight: .semibold))
             } .padding(.horizontal)
                 .padding(.top)
-        }
-        
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8.0) {
-                ForEach(restaurants, id: \.self) { item in
-                    HStack(spacing: 8) {
-                        Image(item.imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 60, height: 60)
-                            .clipped()
-                            .cornerRadius(5)
-                            .padding(.leading, 6)
-                            .padding(.vertical, 6)
-                        VStack(alignment: .leading, spacing: 6) {
-                            HStack {
-                                Text(item.name)
-                                Spacer()
-                                Button(action: {}, label: {
-                                    Image(systemName: "ellipsis")
-                                        .foregroundColor(.gray)
-                                }).padding(.trailing, 10)
-                            }
-                            HStack {
-                                Image(systemName: "star.fill")
-                                Text("4.4 • Sushi • $$")
-                            }
-                            Text("Tokyo, Japan")
-                        }
-                        .font(.system(size: 12, weight: .semibold))
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8.0) {
+                    ForEach(restaurants, id: \.self) { item in
+                        NavigationLink(destination: RestaurantDetailsView(restaurant: item),
+                                       label: {
+                            RestaurantTile(restaurant: item)
+                                .foregroundColor(Color(.label))
+                        })
                     }
-                    .frame(width: 240)
-                    .background(Color.white)
-                    .cornerRadius(5)
-                    .shadow(color: .init(.sRGB, white: 0.9, opacity: 1), radius: 4, x: 0.0, y: 2.0)
-
-                }
-            }.padding(.top, 5)
-                .padding(.horizontal)
+                }.padding(.top, 5)
+                    .padding(.horizontal)
+            }
         }
     }
 }
@@ -70,6 +41,43 @@ struct PopularRestaurantsView: View {
 
 struct PopularRestaurantsView_Previews: PreviewProvider {
     static var previews: some View {
-        SwiftUIView()
+        PopularRestaurantsView()
     }
 }
+
+struct RestaurantTile: View {
+    let restaurant: Restaurants
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(restaurant.imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 60, height: 60)
+                .clipped()
+                .cornerRadius(5)
+                .padding(.leading, 6)
+                .padding(.vertical, 6)
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text(restaurant.name)
+                    Spacer()
+                    Button(action: {}, label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(.gray)
+                    }).padding(.trailing, 10)
+                }
+                HStack {
+                    Image(systemName: "star.fill")
+                    Text("4.4 • Sushi • $$")
+                }
+                Text("Tokyo, Japan")
+            }
+            .font(.system(size: 12, weight: .semibold))
+        }
+        .frame(width: 240)
+        .background(Color.white)
+        .cornerRadius(5)
+        .shadow(color: .init(.sRGB, white: 0.9, opacity: 1), radius: 4, x: 0.0, y: 2.0)
+    }
+}
+

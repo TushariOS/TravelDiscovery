@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct Creatore: Hashable {
+    let id: Int
+    let imageName: String
+    let name: String
+}

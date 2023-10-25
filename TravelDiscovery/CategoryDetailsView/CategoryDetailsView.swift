@@ -8,35 +8,6 @@
 import SwiftUI
 import Kingfisher
 
-class CategoryDetailsViewModel: ObservableObject {
-    @Published var isLoading = true
-    @Published var places: [Place] = []
-    @Published var errorMessage: String = ""
-    init(name: String) {
-        let urlString = "https://travel.letsbuildthatapp.com/travel_discovery/category?name=\((name).lowercased())".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        guard let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-               if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 400 {
-                   self.isLoading = false
-                   self.errorMessage = "Bad Request \(statusCode)"
-                   return
-                }
-                
-                guard let data = data else { return }
-                do {
-                    self.places = try JSONDecoder().decode([Place].self, from: data)
-                }
-                catch {
-                    print("Error", error)
-                    self.errorMessage = error.localizedDescription
-                }
-                self.isLoading = false
-            }
-        }.resume()
-    }
-}
-
 struct CategoryDetailsView: View {
 //    @State var isLoading = false
     private let name: String
